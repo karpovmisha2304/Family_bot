@@ -7,6 +7,9 @@ from aiogram.enums import ParseMode
 from config.config import Config, load_config
 from handlers.other import other_router
 from handlers.user import user_router
+from keboards.command_menu import set_main_menu
+from aiogram.fsm.storage.memory import MemoryStorage
+
 
 # Инициализируем логгер
 logger = logging.getLogger(__name__)
@@ -31,6 +34,8 @@ async def main():
     )
     dp = Dispatcher()
 
+    await set_main_menu(bot)
+    
     # Регистриуем роутеры в диспетчеpip insatре
     dp.include_router(user_router)
     dp.include_router(other_router)

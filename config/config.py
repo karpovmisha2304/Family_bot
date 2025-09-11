@@ -18,7 +18,7 @@ class LogSettings:
 class Config:
     bot: TgBot
     log: LogSettings
-
+    
 
 def load_config(path: str | None = None) -> Config:
     env = Env()
