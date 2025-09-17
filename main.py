@@ -14,11 +14,14 @@ from aiogram.fsm.storage.memory import MemoryStorage
 # Инициализируем логгер
 logger = logging.getLogger(__name__)
 
+
+
 # Функция конфигурирования и запуска бота
 async def main():
     # Загружаем конфиг в переменную config
     config: Config = load_config()
 
+    
     # Задаём базовую конфигурацию логирования
     logging.basicConfig(
         level=logging.getLevelName(level=config.log.level),

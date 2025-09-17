@@ -4,15 +4,17 @@ from aiogram.filters import Command, CommandStart, StateFilter
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.fsm.state import default_state, State, StatesGroup
-
+from config.config import Config, load_config
 from lexicon.lexicon import LEXICON_RU
 
 storage = MemoryStorage()
 user_router = Router()
 
-counter = 1
-user_dict: dict[int, dict[str, str | int | bool]] = {}
 
+user_dict: dict[int, dict[str, str | int | bool]] = {}
+config: Config = load_config()
+user = int(config.user.id)
+print(user, type(user))
 
 class FSMFillForm(StatesGroup):
     # Создаем экземпляры класса State, последовательно
@@ -53,15 +55,23 @@ async def price_purchases(message: Message, state: FSMContext):
     
 @user_router.message(Command(commands='view'))
 async def view_purchases(message: Message):
+    print(message.from_user.id)
     with open ('C:/проекты_пайтон/Family_bot/purchases.txt', 'r', encoding='utf-8') as file:
         rd = file.read()
-        print(rd, len(rd))
         if len(rd) > 0:
-            await message.answer(text=f'{rd}')
+            print(rd.split('\n'))
+            summ = sum(int(i.split()[-1]) for i in rd.split('\n')[:-1])
+            
+            await message.answer(text=f'{rd}\n\nИтого: {summ} рублей')
         else:
-            await message.answer(text='Покупки еще не внесены\nВыберите дальнейшие действия в Меню')
+            await message.answer(text='Покупки еще не внесены\nВыберите дальнейшие действия в Меню\nИли перейдите по ссылке /help')
             
 @user_router.message(Command(commands='del'))
 async def del_purchases(message: Message):
-    with open ('C:/проекты_пайтон/Family_bot/purchases.txt', 'w', encoding='utf-8') as file:
-        await message.answer(text=LEXICON_RU['/del'])
+    print(message.from_user.id, type(message.from_user.id), type(user))
+    if message.from_user.id != user:
+        with open ('C:/проекты_пайтон/Family_bot/purchases.txt', 'w', encoding='utf-8') as file:
+            await message.answer(text=LEXICON_RU['/del'])
+    else:
+        await message.answer(text='У тебя нет прав на удаление\nВыберите дальнейшие действия в Меню\nИли перейдите по ссылке /help')    
+        
