@@ -69,7 +69,7 @@ async def view_purchases(message: Message):
 @user_router.message(Command(commands='del'))
 async def del_purchases(message: Message):
     print(message.from_user.id, type(message.from_user.id), type(user))
-    if message.from_user.id != user:
+    if message.from_user.id == user:
         with open ('C:/проекты_пайтон/Family_bot/purchases.txt', 'w', encoding='utf-8') as file:
             await message.answer(text=LEXICON_RU['/del'])
     else:
