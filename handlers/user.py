@@ -48,7 +48,7 @@ async def price_purchases(message: Message, state: FSMContext):
     print(user_dict[message.from_user.id])
     string = ' '.join(v for k, v in user_dict[message.from_user.id].items()) + '\n'
     
-    with open ('C:/проекты_пайтон/Family_bot/purchases.txt', 'a', encoding='utf-8') as file:
+    with open ('/home/woody/Family_bot/purchases.txt', 'a', encoding='utf-8') as file:
         file.write(string)
     await state.clear()
     await message.answer(text='Цена записана\n\nДля продолжения выберите команду в Меню')
@@ -56,7 +56,7 @@ async def price_purchases(message: Message, state: FSMContext):
 @user_router.message(Command(commands='view'))
 async def view_purchases(message: Message):
     print(message.from_user.id)
-    with open ('C:/проекты_пайтон/Family_bot/purchases.txt', 'r', encoding='utf-8') as file:
+    with open ('/home/woody/Family_bot/purchases.txt', 'r', encoding='utf-8') as file:
         rd = file.read()
         if len(rd) > 0:
             print(rd.split('\n'))
@@ -70,7 +70,7 @@ async def view_purchases(message: Message):
 async def del_purchases(message: Message):
     print(message.from_user.id, type(message.from_user.id), type(user))
     if message.from_user.id == user:
-        with open ('C:/проекты_пайтон/Family_bot/purchases.txt', 'w', encoding='utf-8') as file:
+        with open ('/home/woody/Family_bot/purchases.txt', 'w', encoding='utf-8') as file:
             await message.answer(text=LEXICON_RU['/del'])
     else:
         await message.answer(text='У тебя нет прав на удаление\nВыберите дальнейшие действия в Меню\nИли перейдите по ссылке /help')    
